@@ -1,25 +1,99 @@
-name: Sync GitHub to Gitee
+name: Sync Repos to Gitee
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # 每天的UTC时间00:00触发，可以根据需要调整
+  workflow_dispatch:  # 手动触发
+
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout GitHub repository
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Sync to Gitee
-      env:
-        GITEE_USERNAME: ${{ secrets.GITEE_USERNAME }}
-        GITEE_PASSWORD: ${{ secrets.GITEE_PASSWORD }}
-        GITEE_REPO: ${{ secrets.GITEE_REPO }}
-      run: |
-        git config --global user.name "${{ secrets.GITEE_USERNAME }}"
-        git config --global user.email "${{ secrets.GITEE_EMAIL }}"
-        git remote add gitee https://gitee.com/${{ secrets.GITEE_USERNAME }}/${{ secrets.GITEE_REPO }}.git
-        git push gitee main --force
+      - name: Set up Git
+        run: |
+          git config --global user.name "${{ secrets.GITEE_USERNAME }}"
+          git config --global user.email "${{ secrets.GITEE_EMAIL }}"
+
+      - name: Sync scoop-games
+        run: |
+          git clone https://github.com/Calinou/scoop-games
+          cd scoop-games
+          git remote add gitee-scoop-games https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/scoop-games.git
+          git pull origin master
+          git push gitee-scoop-games master
+
+      - name: Sync scoop-nerd-fonts
+        run: |
+          git clone https://github.com/matthewjberger/scoop-nerd-fonts
+          cd scoop-nerd-fonts
+          git remote add gitee-scoop-nerd-fonts https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/scoop-nerd-fonts.git
+          git pull origin master
+          git push gitee-scoop-nerd-fonts master
+
+      - name: Sync scoop-sysinternals
+        run: |
+          git clone https://github.com/niheaven/scoop-sysinternals
+          cd scoop-sysinternals
+          git remote add gitee-scoop-sysinternals https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/scoop-sysinternals.git
+          git pull origin main
+          git push gitee-scoop-sysinternals main
+
+      - name: Sync Extras
+        run: |
+          git clone https://github.com/ScoopInstaller/Extras
+          cd Extras
+          git remote add gitee-Extras https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Extras.git
+          git pull origin master
+          git push gitee-Extras master
+
+      - name: Sync Java
+        run: |
+          git clone https://github.com/ScoopInstaller/Java
+          cd Java
+          git remote add gitee-Java https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Java.git
+          git pull origin master
+          git push gitee-Java master
+
+      - name: Sync Main
+        run: |
+          git clone https://github.com/ScoopInstaller/Main
+          cd Main
+          git remote add gitee-Main https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Main.git
+          git pull origin master
+          git push gitee-Main master
+
+      - name: Sync Nirsoft
+        run: |
+          git clone https://github.com/ScoopInstaller/Nirsoft
+          cd Nirsoft
+          git remote add gitee-Nirsoft https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Nirsoft.git
+          git pull origin master
+          git push gitee-Nirsoft master
+
+      - name: Sync Nonportable
+        run: |
+          git clone https://github.com/ScoopInstaller/Nonportable
+          cd Nonportable
+          git remote add gitee-Nonportable https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Nonportable.git
+          git pull origin master
+          git push gitee-Nonportable master
+
+      - name: Sync PHP
+        run: |
+          git clone https://github.com/ScoopInstaller/PHP
+          cd PHP
+          git remote add gitee-PHP https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/PHP.git
+          git pull origin master
+          git push gitee-PHP master
+
+      - name: Sync Versions
+        run: |
+          git clone https://github.com/ScoopInstaller/Versions
+          cd Versions
+          git remote add gitee-Versions https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Versions.git
+          git pull origin master
+          git push gitee-Versions master
