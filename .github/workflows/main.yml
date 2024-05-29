@@ -97,3 +97,11 @@ jobs:
           git remote add gitee-Versions https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Versions.git
           git pull origin master
           git push gitee-Versions master
+          
+      - name: Sync Scoop
+        run: |
+          git clone https://github.com/ScoopInstaller/Scoop
+          cd Scoop
+          git remote add gitee-Scoop https://${{ secrets.GITEE_USERNAME }}:${{ secrets.GITEE_TOKEN }}@gitee.com/scoop-installer-mirror/Scoop.git
+          git pull origin master
+          git push gitee-Scoop master
